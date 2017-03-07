@@ -1,0 +1,20 @@
+{
+  "name": "larave-find-js-localizations",
+  "version": "1.0.0",
+  "description": "A tools that helps finding untranslated strings in JavaScript files in Laravel projects using rmariuzzo/Laravel-JS-Localization and andywer/laravel-js-localization",
+  "engines": {
+    "node": ">=7.7.1"
+  },
+  "main": "index.js",
+  "repository": "https://github.com/clentfort/laravel-find-js-localizations",
+  "author": "Christian Lentfort <christian@lentfort.com>",
+  "license": "MIT",
+  "dependencies": {
+    "babel-traverse": "^6.23.1",
+    "babel-types": "^6.23.0",
+    "babylon": "^6.16.1"
+  },
+  "devDependencies": {
+    "prettier": "^0.21.0"
+  }
+}
