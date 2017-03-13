@@ -1,4 +1,6 @@
-<?php namespace clentfort\LaravelFindJsLocalizations\Exceptions;
+<?php
+
+namespace clentfort\LaravelFindJsLocalizations\Exceptions;
 
 class RuntimeException extends \RuntimeException implements ExceptionInterface
 {
