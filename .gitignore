@@ -77,3 +77,7 @@ composer.phar
 # End of https://www.gitignore.io/api/composer
 
 resources/
+
+# PHP CS Fixer cache
+.php_cs.cache
+

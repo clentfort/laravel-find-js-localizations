@@ -18,5 +18,8 @@
         "psr-4": {
             "clentfort\\LaravelFindJsLocalizations\\": "./"
         }
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.1"
     }
 }
