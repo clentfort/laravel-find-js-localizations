@@ -13,5 +13,10 @@
         "illuminate/support": "^v5.1",
         "illuminate/filesystem": "^v5.1",
         "symfony/process": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "clentfort\\LaravelFindJsLocalizations\\": "./"
+        }
     }
 }
