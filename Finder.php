@@ -66,9 +66,9 @@ class Finder
                 return Str::endsWith($file, $this->jsSourceFileType);
             })
             ->map(function ($file) {
-                return implode(
-                    DIRECTORY_SEPARATOR,
-                    [$this->jsSourceDir,  $file->getRelativePathname()]
+                return PathHelper::join(
+                    $this->jsSourceDir,
+                    $file->getRelativePathname()
                 );
             });
     }
@@ -97,7 +97,7 @@ class Finder
         $finder->mustRun();
         $json = json_decode($finder->getOutput());
 
-        // The process should always return valid JSON unless something went 
+        // The process should always return valid JSON unless something went
         // wrong invoking it.
         if (json_last_error() !== JSON_ERROR_NONE) {
             $error = json_last_error_msg();
