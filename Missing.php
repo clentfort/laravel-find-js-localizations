@@ -14,5 +14,17 @@ $keys = $sourceFileKeyList->reduce(function ($keys, $file) {
     }, $file->keys));
 }, new Collection());
 
-$manager = new TranslationsManager(['en', 'de'], './resources/lang/');
-dd($manager->determineUntranslatedKeys($keys));
+$languages = new Collection([
+    'en' => new PrefixFileManager('en', './resources/lang/'),
+    'de' => new PrefixFileManager('de', './resources/lang/'),
+    'ar' => new PrefixFileManager('ar', './resources/lang/'),
+]);
+
+dd($languages->mapWithKeys(function ($prefixFileManager, $language) use ($keys) {
+    $keys = TranslationKeysManager::determineUntranslatedKeys(
+        $keys,
+        $prefixFileManager
+    );
+
+    return [$language => $keys];
+}));

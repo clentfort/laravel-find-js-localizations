@@ -2,8 +2,8 @@
 
 namespace clentfort\LaravelFindJsLocalizations;
 
-class PathHelper {
-
+class PathHelper
+{
     /**
      * Joins two pathes $a and $b with the DIRECTORY_SEPERATOR.
      *

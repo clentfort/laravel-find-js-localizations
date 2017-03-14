@@ -46,11 +46,17 @@ class Finder
         $nodeExecutable,
         $jsSourceFileType = '.js'
     ) {
-        $this->jsSourceDir = realpath($jsSourceDir);
-        $this->nodeExecutable = realpath($nodeExecutable);
+        $this->jsSourceDir = $jsSourceDir;
+        $this->nodeExecutable = $nodeExecutable;
         $this->jsSourceFileType = $jsSourceFileType;
 
         $this->filesystem = new Filesystem();
+
+        if (!$this->filesystem->isDirectory($jsSourceDir)) {
+            throw new RuntimeException(
+                "\"$jsSourceDir\" is not a directory."
+            );
+        }
     }
 
     /**
