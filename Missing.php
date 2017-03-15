@@ -6,7 +6,7 @@ include './vendor/autoload.php';
 
 use Illuminate\Support\Collection;
 
-list($sourceFileKeyList, $errors) = (new Finder('./resources/assets/js', '/usr/bin/node'))->findTranslationKeys();
+list($sourceFileKeyList, $errors) = (new KeyFinder('./resources/assets/js', '/usr/bin/node'))->findKeys();
 
 $keys = $sourceFileKeyList->reduce(function ($keys, $file) {
     return $keys->merge(array_map(function ($key) {
@@ -14,17 +14,14 @@ $keys = $sourceFileKeyList->reduce(function ($keys, $file) {
     }, $file->keys));
 }, new Collection());
 
-$languages = new Collection([
-    'en' => new PrefixFileManager('en', './resources/lang/'),
-    'de' => new PrefixFileManager('de', './resources/lang/'),
-    'ar' => new PrefixFileManager('ar', './resources/lang/'),
+$keySets = new Collection([
+    'en' => new KeySet('./resources/lang/en/'),
+    'de' => new KeySet('./resources/lang/de/'),
+    'ar' => new KeySet('./resources/lang/ar/'),
 ]);
 
-dd($languages->mapWithKeys(function ($prefixFileManager, $language) use ($keys) {
-    $keys = TranslationKeysManager::determineUntranslatedKeys(
-        $keys,
-        $prefixFileManager
-    );
+dd($keySets->mapWithKeys(function ($keySet, $language) use ($keys) {
+    $keys = KeySetDiffer::diffKeys($keys, $keySet);
 
     return [$language => $keys];
 }));

@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 use Symfony\Component\Process\ProcessBuilder;
 use clentfort\LaravelFindJsLocalizations\Exceptions\RuntimeException;
 
-class Finder
+class KeyFinder
 {
     /**
      * @var Illuminate\Filesystem\Filesystem
@@ -88,7 +88,7 @@ class Finder
      *               in and the second item being a list of errors logged to
      *               STDOUT
      */
-    protected function findTranslationKeysInJsSourceFiles(Collection $files)
+    protected function findKeysInJsSourceFiles(Collection $files)
     {
         /**
          * @var Process
@@ -125,10 +125,10 @@ class Finder
      *
      * @return array
      */
-    public function findTranslationKeys()
+    public function findKeys()
     {
         $files = $this->listJsSourceFiles();
 
-        return $this->findTranslationKeysInJsSourceFiles($files);
+        return $this->findKeysInJsSourceFiles($files);
     }
 }
