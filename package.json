@@ -1,5 +1,5 @@
 {
-  "name": "larave-find-js-localizations",
+  "name": "laravel-find-js-localizations",
   "version": "1.0.0",
   "description": "A tools that helps finding untranslated strings in JavaScript files in Laravel projects using rmariuzzo/Laravel-JS-Localization and andywer/laravel-js-localization",
   "engines": {
