@@ -30,17 +30,18 @@ class KeySetDiffer
         // `some.string` will be saved in `some.php` with the index `string`.
         $groupedKeys = static::groupKeysByPrefix($keys);
 
-        return $groupedKeys->mapWithKeys(
-            function ($keys, $prefix) use ($keySet) {
-                $currentKeys = $keySet->getKeysWithPrefix($prefix);
+        $groupedNewKeys = new Collection();
 
-                return [
-                    $prefix => $keys->flip()->diffKeys($currentKeys)->keys(),
-                ];
+        foreach ($groupedKeys as $prefix => $keys) {
+            $currentKeys = $keySet->getKeysWithPrefix($prefix);
+            $newKeys = $keys->diff($currentKeys->keys());
+
+            if (!$newKeys->isEmpty()) {
+                $groupedNewKeys[$prefix] = $newKeys;
             }
-        )->filter(function ($newKeys) {
-            return $newKeys->isNotEmpty();
-        });
+        }
+
+        return $groupedNewKeys;
     }
 
     /**
@@ -54,7 +55,7 @@ class KeySetDiffer
      */
     protected static function groupKeysByPrefix(Collection $keys)
     {
-        return $keys->sort()->groupBy(function ($key) {
+        return $keys->unique()->groupBy(function ($key) {
             return strstr($key, '.', true);
         })->map(function ($group) {
             return $group->map(function ($key) {

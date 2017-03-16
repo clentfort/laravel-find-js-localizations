@@ -10,7 +10,7 @@ use clentfort\LaravelFindJsLocalizations\Exceptions\RuntimeException;
 class KeySet
 {
     /**
-     * @var Illuminate\Filesystem\Filesystem
+     * @var Filesystem
      */
     private $filesystem;
 
@@ -26,12 +26,9 @@ class KeySet
         $this->filesystem = new Filesystem();
 
         if (!$this->filesystem->exists($this->directory)) {
-            if (!$this->filesystem->makeDirectory($this->directory, 0755, true)) {
-                throw new RuntimeException(
-                    "Directory \"$this->directory\" does not exists and could ".
-                    'not be created.'
-                );
-            }
+            throw new RuntimeException(
+                "Directory \"$this->directory\" does not exists."
+            );
         }
 
         if (!$this->filesystem->isDirectory($this->directory)) {
@@ -45,9 +42,13 @@ class KeySet
     {
         $prefixFilePath = $this->getFilePath($prefix);
         if ($prefixFilePath && $this->filesystem->isFile($prefixFilePath)) {
-            return new Collection(Arr::dot($this->filesystem->getRequire(
-                $prefixFilePath
-            )));
+            $keys = $this->filesystem->getRequire($prefixFilePath);
+            if (is_array($keys)) {
+                $keys = Arr::dot($keys);
+                ksort($keys);
+
+                return new Collection($keys);
+            }
         }
 
         return new Collection();
@@ -59,8 +60,22 @@ class KeySet
 
         return $this->filesystem->put(
             $prefixFilePath,
-            var_export(Arr::dot($keys))
+            static::exportKeys($keys)
         );
+    }
+
+    /**
+     * @return string
+     */
+    protected static function exportKeys($keys)
+    {
+        $template = <<<PHP
+<?php
+
+return %s;
+PHP;
+
+        return sprintf($template, var_export(Arr::dot($keys), true));
     }
 
     protected function getFilePath($prefix)

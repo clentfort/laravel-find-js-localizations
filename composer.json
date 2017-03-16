@@ -1,5 +1,5 @@
 {
-    "name": "clentfort/larave-find-js-localizations",
+    "name": "clentfort/laravel-find-js-localizations",
     "description": "A tools that helps finding untranslated strings in JavaScript files in Laravel projects using rmariuzzo/Laravel-JS-Localization and andywer/laravel-js-localization",
     "type": "stable",
     "license": "MIT",

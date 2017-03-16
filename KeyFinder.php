@@ -44,7 +44,7 @@ class KeyFinder
     public function __construct(
         $jsSourceDir,
         $nodeExecutable,
-        $jsSourceFileType = '.js'
+        $jsSourceFileType = 'js'
     ) {
         $this->jsSourceDir = $jsSourceDir;
         $this->nodeExecutable = $nodeExecutable;
@@ -69,7 +69,7 @@ class KeyFinder
     {
         return (new Collection($this->filesystem->allFiles($this->jsSourceDir)))
             ->filter(function ($file) {
-                return Str::endsWith($file, $this->jsSourceFileType);
+                return Str::endsWith($file, ".$this->jsSourceFileType");
             })
             ->map(function ($file) {
                 return PathHelper::join(
@@ -95,7 +95,7 @@ class KeyFinder
          */
         $finder = (new ProcessBuilder([
             $this->nodeExecutable,
-            'index.js',
+            PathHelper::join(dirname(__FILE__), 'index.js'),
         ]))->getProcess();
         $finder->setInput($files->implode("\n"));
 
@@ -115,7 +115,9 @@ class KeyFinder
 
         return [
             new Collection($json),
-            array_filter(explode(PHP_EOL, $finder->getErrorOutput())),
+            new Collection(array_filter(
+                explode(PHP_EOL, $finder->getErrorOutput())
+            )),
         ];
     }
 

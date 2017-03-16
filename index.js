@@ -21,7 +21,7 @@ stdin.on('end', () => {
         readFile(file, 'utf-8', (error, content) => {
           if (error) {
             console.error(
-              `Could not read file "${file}" due to error, skipping`
+              `Could not read file "${file}" due to error, skipping.`
             );
             return resolve(null);
           }
@@ -38,7 +38,7 @@ stdin.on('end', () => {
             }
           } catch (error) {
             console.error(
-              `Could not parse file "${file}" due to error, skipping`
+              `Could not parse file "${file}" due to error, skipping.`
             );
             return resolve(null);
           }
