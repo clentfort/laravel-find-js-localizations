@@ -6,6 +6,12 @@
     "node": ">=7.7.1"
   },
   "main": "index.js",
+  "files": [
+    "LIECENSE",
+    "README.md",
+    "index.js",
+    "yarn.lock"
+  ],
   "repository": "https://github.com/clentfort/laravel-find-js-localizations",
   "author": "Christian Lentfort <christian@lentfort.com>",
   "license": "MIT",
