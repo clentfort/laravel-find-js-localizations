@@ -3,7 +3,6 @@
 namespace clentfort\LaravelFindJsLocalizations;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 
 class KeySetDiffer
 {

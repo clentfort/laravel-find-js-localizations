@@ -76,7 +76,7 @@ class FindMissing extends Command
             }
 
             if (!$this->confirm(
-                "Found ${missingKeyCount} keys missing in ${path}, do you " .
+                "Found ${missingKeyCount} keys missing in ${path}, do you ".
                 'want to add these?'
             )) {
                 return;

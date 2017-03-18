@@ -10,7 +10,7 @@ use clentfort\LaravelFindJsLocalizations\KeySetDiffer;
 class KeySetDifferTest extends TestCase
 {
     /**
-     * DiffKeys with all keys in the key-set that are in the key-list
+     * DiffKeys with all keys in the key-set that are in the key-list.
      */
     public function testDiffKeysWithoutMissingKeys()
     {
