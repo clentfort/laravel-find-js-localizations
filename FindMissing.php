@@ -71,6 +71,10 @@ class FindMissing extends Command
                 $missingKeyCount
             ) = $this->getKeysMissingFromSet($keySet, $keyList);
 
+            if ($missingKeyCount == 0) {
+                return;
+            }
+
             $write = $this->confirm(
                 "Found $missingKeyCount keys missing in ${path}, do you want ".
                 'to add these?'
