@@ -7,4 +7,3 @@ php:
 
 install:
   - composer update --prefer-dist --prefer-lowest -vvv
-
