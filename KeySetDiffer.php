@@ -59,7 +59,7 @@ class KeySetDiffer
             return strstr($key, '.', true);
         })->map(function ($group) {
             return $group->map(function ($key) {
-                return Str::substr(strstr($key, '.'), 1);
+                return mb_substr(strstr($key, '.'), 1);
             });
         });
     }

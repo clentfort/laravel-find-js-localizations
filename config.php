@@ -26,4 +26,13 @@ return [
     | be searched too.
     */
     'directory' => 'resources/assets/js/',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default lemma used when inserting new keys
+    |--------------------------------------------------------------------------
+    | All new keys will have this lemma as the default translation, you can use
+    | `%s` to get the key.
+    */
+    'lemma' => 'TODO: %s',
 ];

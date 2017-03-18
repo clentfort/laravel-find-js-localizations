@@ -53,6 +53,7 @@ The command can be configured through the configuration-file in
 | `node_executable` | The name or the path to the Node.js-exectuable |
 | `extension` | The extension of your JavaScript-files |
 | `directory` | The directory your JavaScript-assets are stored |
+| `lemma` | The default placeholder text that found keys will have |
 
 
 # Usage

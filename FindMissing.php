@@ -75,15 +75,14 @@ class FindMissing extends Command
                 return;
             }
 
-            $write = $this->confirm(
-                "Found $missingKeyCount keys missing in ${path}, do you want ".
-                'to add these?'
-            );
-
-            if (!$write) {
+            if (!$this->confirm(
+                "Found ${missingKeyCount} keys missing in ${path}, do you " .
+                'want to add these?'
+            )) {
                 return;
             }
 
+            $this->info("Adding keys in ${path}");
             $this->addMissingKeysToKeySet($keySet, $missingKeys);
         });
     }
@@ -111,7 +110,7 @@ class FindMissing extends Command
                 'reported:'
             );
             $errors->each(function ($error) {
-                $this->warn(" * $error");
+                $this->warn(" * ${error}");
             });
         }
 
@@ -144,20 +143,25 @@ class FindMissing extends Command
         KeySet $keySet,
         Collection $missingKeys
     ) {
-        return $missingKeys->each(function ($group, $prefix) use ($keySet) {
-            $keys = $keySet->getKeysWithPrefix($prefix);
+        return $missingKeys->each(function ($keys, $prefix) use ($keySet) {
+            $currentKeys = $keySet->getKeysWithPrefix($prefix);
             // $group contains a list of keys not yet in the keys of the
             // key-set, since we want to use the keys as the indices of an
             // associative array we need to flip them first.
-            $keys = $keys->merge($group->flip()->map(function () {
-                return 'Missing Translation';
-            }));
+            $newKeys = [];
+            foreach ($keys as $key) {
+                $newKeys[$key] = sprintf(
+                    $this->config['lemma'],
+                    "${prefix}.${key}"
+                );
+            }
+            $allKeys = $currentKeys->merge($newKeys);
 
             if ($this->isVerbose()) {
-                $this->line("Writing \"$prefix.php\".");
+                $this->info(" * Writing \"${prefix}.php\".");
             }
 
-            $keySet->setKeysWithPrefix($prefix, $keys);
+            $keySet->setKeysWithPrefix($prefix, $allKeys);
         });
     }
 
