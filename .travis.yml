@@ -4,5 +4,13 @@ php:
   - 5.6
   - 7.1
 
+cache:
+  directories:
+      - $HOME/.composer
+
+scripts:
+  - vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --using-cache=no --path-mode=intersection `git diff --name-only --diff-filter=ACMRTUXB $TRAVIS_COMMIT_RANGE`
+  - vendor/bin/phpunit --verbose
+
 install:
   - composer update --prefer-dist --prefer-lowest -vvv
