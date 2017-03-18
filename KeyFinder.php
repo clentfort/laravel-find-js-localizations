@@ -42,15 +42,15 @@ class KeyFinder
      *             `.js` or `.mjs`
      */
     public function __construct(
+        Filesystem $filesystem,
         $jsSourceDir,
         $nodeExecutable,
         $jsSourceFileType = 'js'
     ) {
+        $this->filesystem = $filesystem;
         $this->jsSourceDir = $jsSourceDir;
         $this->nodeExecutable = $nodeExecutable;
         $this->jsSourceFileType = $jsSourceFileType;
-
-        $this->filesystem = new Filesystem();
 
         if (!$this->filesystem->isDirectory($jsSourceDir)) {
             throw new RuntimeException(

@@ -6,9 +6,9 @@ charset = utf-8
 end_of_line = lf
 indent_style = space
 insert_final_newline = true
+max_line_length = 80
+trim_trailing_whitespace = true
 
-# Matches multiple files with brace expansion notation
-# Set default charset
 [*.php]
 indent_size = 4
 

@@ -23,8 +23,8 @@ class KeySetDiffer
      *                    `['some' => ['string', 'otherstring']]`.
      */
     public static function diffKeys(
-        Collection $keys,
-        KeySet $keySet
+        KeySet $keySet,
+        Collection $keys
     ) {
         // Translations are stored in "prefix"-files. This means a key
         // `some.string` will be saved in `some.php` with the index `string`.

@@ -3,6 +3,7 @@
 namespace clentfort\LaravelFindJsLocalizations;
 
 use Illuminate\Support\ServiceProvider;
+use File;
 
 class ArtisanServiceProvider extends ServiceProvider
 {
@@ -21,15 +22,16 @@ class ArtisanServiceProvider extends ServiceProvider
      */
     public function register()
     {
-		$this->mergeConfigFrom(
+        $this->mergeConfigFrom(
             PathHelper::join(__DIR__, 'config.php'),
             'laravel-find-js-localizations'
-		);
+        );
 
         $this->app->singleton(
             'find-js-localizations.command.find-missing',
             function ($app) {
                 return new FindMissing(
+                    $app->make('File')->getFacadeRoot(),
                     $app['config']['laravel-find-js-localizations']
                 );
             }

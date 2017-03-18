@@ -9,7 +9,6 @@ use clentfort\LaravelFindJsLocalizations\Exceptions\RuntimeException;
 
 class KeySet
 {
-
     /**
      * @var string
      */
@@ -29,11 +28,10 @@ PHP;
      */
     protected $directory;
 
-    public function __construct($directory)
+    public function __construct(Filesystem $filesystem, $directory)
     {
+        $this->filesystem = $filesystem;
         $this->directory = $directory;
-
-        $this->filesystem = new Filesystem();
 
         if (!$this->filesystem->exists($this->directory)) {
             throw new RuntimeException(
@@ -81,6 +79,7 @@ PHP;
     {
         $keys = Arr::dot($keys);
         ksort($keys);
+
         return sprintf(static::FILE_TEMPLATE, var_export($keys, true));
     }
 

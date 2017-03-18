@@ -21,7 +21,8 @@ class FindMissing extends Command
      *
      * @var string
      */
-    protected $description = 'Scans the JavaScript files for translation-keys that are missing from the translation-files.';
+    protected $description = 'Scans the JavaScript files for translation-keys '.
+                             'that are missing from the translation-files.';
 
     /**
      * The config for the command.
@@ -37,15 +38,15 @@ class FindMissing extends Command
 
     /**
      * Create a new command instance.
-     * 
+     *
      * @param array $config The configuration for this command
      */
-    public function __construct(array $config)
+    public function __construct(Filesystem $filesystem, array $config)
     {
         parent::__construct();
 
+        $this->filesystem = $filesystem;
         $this->config = $config;
-        $this->filesystem = new Filesystem();
     }
 
     /**
@@ -71,24 +72,15 @@ class FindMissing extends Command
             ) = $this->getKeysMissingFromSet($keySet, $keyList);
 
             $write = $this->confirm(
-                "Found $missingKeyCount keys missing in $path, do you want to ".
-                'add these?'
+                "Found $missingKeyCount keys missing in ${path}, do you want ".
+                'to add these?'
             );
 
             if (!$write) {
                 return;
             }
 
-            $missingKeys->each(function ($group, $prefix) use ($keySet) {
-                $keys = $keySet->getKeysWithPrefix($prefix);
-                $keys = $keys->merge($group->flip()->map(function () {
-                    return 'Missing Translation';
-                }));
-                $keySet->setKeysWithPrefix($prefix, $keys);
-                if ($this->isVerbose()) {
-                    $this->line("Writing \"$prefix.php\".");
-                }
-            });
+            $this->addMissingKeysToKeySet($keySet, $missingKeys);
         });
     }
 
@@ -103,7 +95,8 @@ class FindMissing extends Command
             $fileKeyList,
             $errors
         ) = (new KeyFinder(
-            $this->config['directory'],
+            $this->filesystem,
+            base_path($this->config['directory']),
             $this->config['node_executable'],
             $this->config['extension']
         ))->findKeys();
@@ -122,25 +115,46 @@ class FindMissing extends Command
     }
 
     /**
-     * Finds keys that are in $keyList but not in $keySet
+     * Finds keys that are in $keyList but not in $keySet.
      *
-     * @param KeySey $keySey
+     * @param KeySet     $keySet
      * @param Collection $keyList
      *
-     * @return array A collection of keys, grouped by their common preifx, that 
-     *               are missing from $keySet and the total number of foudn 
-     *               keys.
+     * @return array a collection of keys, grouped by their common preifx, that
+     *               are missing from $keySet and the total number of foudn
+     *               keys
      */
     private function getKeysMissingFromSet(
-        KeySey $keySet,
+        KeySet $keySet,
         Collection $keyList
     ) {
-        $missingKeys = KeySetDiffer::diffKeys($keyList, $keySet);
+        $missingKeys = KeySetDiffer::diffKeys($keySet, $keyList);
         $missingKeyCount = $missingKeys->reduce(function ($total, $group) {
             return $total + $group->count();
         }, 0);
 
         return [$missingKeys, $missingKeyCount];
+    }
+
+    private function addMissingKeysToKeySet(
+        KeySet $keySet,
+        Collection $missingKeys
+    ) {
+        return $missingKeys->each(function ($group, $prefix) use ($keySet) {
+            $keys = $keySet->getKeysWithPrefix($prefix);
+            // $group contains a list of keys not yet in the keys of the
+            // key-set, since we want to use the keys as the indices of an
+            // associative array we need to flip them first.
+            $keys = $keys->merge($group->flip()->map(function () {
+                return 'Missing Translation';
+            }));
+
+            if ($this->isVerbose()) {
+                $this->line("Writing \"$prefix.php\".");
+            }
+
+            $keySet->setKeysWithPrefix($prefix, $keys);
+        });
     }
 
     /**
@@ -156,7 +170,10 @@ class FindMissing extends Command
 
         $languages = [];
         foreach ($languageDirs as $languageDir) {
-            $languages[$languageDir] = new KeySet($languageDir);
+            $languages[$languageDir] = new KeySet(
+                $this->filesystem,
+                $languageDir
+            );
         }
 
         return new Collection($languages);
