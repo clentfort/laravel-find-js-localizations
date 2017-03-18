@@ -37,8 +37,10 @@ class FindMissing extends Command
 
     /**
      * Create a new command instance.
+     * 
+     * @param array $config The configuration for this command
      */
-    public function __construct($config)
+    public function __construct(array $config)
     {
         parent::__construct();
 
@@ -63,18 +65,14 @@ class FindMissing extends Command
         $keySets = $this->getAllKeySets();
 
         $keySets->each(function ($keySet, $path) use ($keyList) {
-            $missingKeys = KeySetDiffer::diffKeys($keyList, $keySet);
-            $countMissingKeys = $missingKeys->reduce(function ($total, $group) {
-                return $total + $group->count();
-            }, 0);
-
-            if ($countMissingKeys == 0) {
-                return;
-            }
+            list(
+                $missingKeys,
+                $missingKeyCount
+            ) = $this->getKeysMissingFromSet($keySet, $keyList);
 
             $write = $this->confirm(
-                "Found $countMissingKeys keys missing in $path, do you want ".
-                'to add these?'
+                "Found $missingKeyCount keys missing in $path, do you want to ".
+                'add these?'
             );
 
             if (!$write) {
@@ -123,8 +121,26 @@ class FindMissing extends Command
         return static::fileKeyListToKeyList($fileKeyList);
     }
 
-    private function writeKeyList(Collection $keyList, KeySet $keySet)
-    {
+    /**
+     * Finds keys that are in $keyList but not in $keySet
+     *
+     * @param KeySey $keySey
+     * @param Collection $keyList
+     *
+     * @return array A collection of keys, grouped by their common preifx, that 
+     *               are missing from $keySet and the total number of foudn 
+     *               keys.
+     */
+    private function getKeysMissingFromSet(
+        KeySey $keySet,
+        Collection $keyList
+    ) {
+        $missingKeys = KeySetDiffer::diffKeys($keyList, $keySet);
+        $missingKeyCount = $missingKeys->reduce(function ($total, $group) {
+            return $total + $group->count();
+        }, 0);
+
+        return [$missingKeys, $missingKeyCount];
     }
 
     /**

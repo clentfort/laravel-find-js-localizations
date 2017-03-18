@@ -9,6 +9,16 @@ use clentfort\LaravelFindJsLocalizations\Exceptions\RuntimeException;
 
 class KeySet
 {
+
+    /**
+     * @var string
+     */
+    const FILE_TEMPLATE = <<<PHP
+<?php
+
+return %s;
+PHP;
+
     /**
      * @var Filesystem
      */
@@ -69,13 +79,9 @@ class KeySet
      */
     protected static function exportKeys($keys)
     {
-        $template = <<<PHP
-<?php
-
-return %s;
-PHP;
-
-        return sprintf($template, var_export(Arr::dot($keys), true));
+        $keys = Arr::dot($keys);
+        ksort($keys);
+        return sprintf(static::FILE_TEMPLATE, var_export($keys, true));
     }
 
     protected function getFilePath($prefix)

@@ -21,10 +21,17 @@ class ArtisanServiceProvider extends ServiceProvider
      */
     public function register()
     {
+		$this->mergeConfigFrom(
+            PathHelper::join(__DIR__, 'config.php'),
+            'laravel-find-js-localizations'
+		);
+
         $this->app->singleton(
             'find-js-localizations.command.find-missing',
             function ($app) {
-                return new FindMissing($app['config']['laravel-find-js-localizations']);
+                return new FindMissing(
+                    $app['config']['laravel-find-js-localizations']
+                );
             }
         );
 
