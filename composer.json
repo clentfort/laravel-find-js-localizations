@@ -1,7 +1,7 @@
 {
     "name": "clentfort/laravel-find-js-localizations",
     "description": "A tools that helps finding untranslated strings in JavaScript files in Laravel projects using rmariuzzo/Laravel-JS-Localization and andywer/laravel-js-localization",
-    "type": "stable",
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
@@ -22,5 +22,9 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.1",
         "phpunit/phpunit": "^6.0"
+    },
+    "support": {
+      "issues": "https://github.com/clentfort/laravel-find-js-localizations/issues",
+      "source": "https://github.com/clentfort/laravel-find-js-localizations"
     }
 }
