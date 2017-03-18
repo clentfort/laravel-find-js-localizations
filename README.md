@@ -22,8 +22,7 @@ the following:
 
 ```bash
 composer require --dev clentfort/laravel-find-js-localizations
-npm install laravel-find-js-localizations
-php artisan vendor:publish
+npm install --save-dev laravel-find-js-localizations
 ```
 
 After the installation of the packages load the service-provider in your app.
@@ -58,7 +57,7 @@ The command can be configured through the configuration-file in
 
 # Usage
 
-Simply run `php artisan js-localization:missing`. 
+Simply run `php artisan js-localization:missing`.
 
 > The command will write the files in the array-dot notation!
 
@@ -74,7 +73,7 @@ If you want to contribute feel free to send a PR.
   [prettier][prettier] with the `--single-quote` flag before creating the PR.
 * If you are improving on the PHP please make sure you do not brake the 80 chars
   per line limit and make sure to run [php-cs-fixer][php-cs-fixer] before you
-  create a PR. 
+  create a PR.
 
 [prettier]: https://github.com/jlongster/prettier
 [php-cs-fixer]: https://github.com/FriendsOfPHP/PHP-CS-Fixer
