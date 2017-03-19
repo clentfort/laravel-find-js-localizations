@@ -183,5 +183,4 @@ class KeySetTest extends TestCase
 
         $this->keySet->setKeysWithPrefix($prefix, $fileContent);
     }
-
 }
