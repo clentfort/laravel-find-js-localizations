@@ -49,7 +49,7 @@ PHP;
     public function getKeysWithPrefix($prefix)
     {
         $prefixFilePath = $this->getFilePath($prefix);
-        if ($prefixFilePath && $this->filesystem->isFile($prefixFilePath)) {
+        if ($this->filesystem->isFile($prefixFilePath)) {
             $keys = $this->filesystem->getRequire($prefixFilePath);
             if (is_array($keys)) {
                 $keys = Arr::dot($keys);
