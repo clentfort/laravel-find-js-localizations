@@ -15,11 +15,6 @@ The package consists out of two parts; a PHP part, available through composer,
 and JavaScript part available through npm. First install both parts by running
 the following:
 
-> WARNING: At this point the package is not stable yet! If you want to use it
-> set the minimum stability of your project to "dev" by adding
-> `"minimum-stability": "dev"` to your `composer.json`.
-
-
 ```bash
 composer require --dev clentfort/laravel-find-js-localizations
 npm install --save-dev laravel-find-js-localizations
