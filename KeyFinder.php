@@ -95,7 +95,7 @@ class KeyFinder
          */
         $finder = (new ProcessBuilder([
             $this->nodeExecutable,
-            PathHelper::join(dirname(__FILE__), 'index.js'),
+            PathHelper::join(__DIR__, 'index.js'),
         ]))->getProcess();
         $finder->setInput($files->implode("\n"));
 
